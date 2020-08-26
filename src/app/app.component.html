@@ -68,11 +68,11 @@
       Description:
       <input class="event-info" matInput #message maxlength="50" [(ngModel)]="details" placeholder="Event details" [disabled]="this.ALERTS_DATA[i].checked">
       
-      <button class="event-info" mat-raised-button color="primary" (click)="chatBoxFunc(i)">Chat</button> 
+      <button class="event-info" mat-raised-button color="primary" (click)="submitEvent(i)">Submit</button> 
       
       <button mat-raised-button color="primary" class="map-button" id="dynamicId{{i}}" (click)="changeToOnlyMapPage('mapPage'); whichMap(i); getDirection()">On Map</button>
 
-      <button class="event-info" mat-raised-button color="primary" (click)="submitEvent(i)">Submit</button>
+      <button class="event-info" mat-raised-button color="primary" (click)="chatBoxFunc(i)">Chat</button>
       
     </mat-expansion-panel>
 
@@ -216,4 +216,6 @@
 
   <div class="all-chats" *ngFor="let alert of ALERTS_DATA; let i = index;">
     <chat-window [user] ="alert['client_obj'].rowKey" (closechatfunck) = "closeChatFunc(alert)" *ngIf="this.ALERTS_DATA[i].chat_box_open==true"></chat-window>
+
   </div>
+

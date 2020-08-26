@@ -123,7 +123,7 @@ export class AppComponent{
   private readonly getActiveEvents = this.prefixUrltable + "/api/get_current_alerts";
   private readonly getClientData = this.prefixUrltable + "/api/match-alert-to-client/"
   private readonly addEvent = this.prefixUrlcosmos + "/api/add-event"
-  private readonly ClientDeleteMessage = this.prefixUrltable + "/api/client-delete-message/";
+  private readonly ClientDeleteMessage = this.prefixUrlcosmos + "/api/client-delete-message/";
   private readonly deleteCurrent = this.prefixUrltable + "/api/delete-alert"
   private readonly getHistoryEvents = this.prefixUrlcosmos + "/api/get_history_events"
 
@@ -167,7 +167,13 @@ export class AppComponent{
         this.hubConnection = hub;
         hub.on("NewAlertWeb", data => {
           console.log(data)
-          let alert : CurrentAlertsObject = data
+          let alert : CurrentAlertsObject =   {
+            partitionKey:data.PartitionKey,
+            rowKey: data.RowKey,
+            latitude: data.latitude,
+            longitude: data.longitude,
+            time: data.time
+          }
           console.log("SignalR was activated")
           this.SignalrUpdatingNewCurrentAlertAdd(alert);
         });
@@ -289,22 +295,14 @@ export class AppComponent{
       console.log(cureentalert)
       return
     }
-    else{
-      let Alert: CurrentAlertsObject =   {
-        partitionKey: alert.PartitionKey,
-        rowKey: alert.RowKey,
-        latitude: alert.latitude,
-        longitude: alert.longitude,
-        time: alert.time
+
+    console.log(alert)
+    this.http.get<JSON>(this.getClientData + alert.partitionKey, this.httpOptions).subscribe(clientsData => {
+      console.log(clientsData);
+      if(clientsData != null){
+        this.CreateAlerts(alert, clientsData);
       }
-      console.log(Alert)
-      this.http.get<JSON>(this.getClientData + Alert.partitionKey, this.httpOptions).subscribe(clientsData => {
-        console.log(clientsData);
-        if(clientsData != null){
-          this.CreateAlerts(alert, clientsData);
-        }
-      }); 
-    }
+    }); 
 }
 
 
@@ -399,7 +397,7 @@ public DeleteAlertFromArray(PartitionKey, RowKey){
     var _kCord = new google.maps.LatLng(this.origin.lat, this.origin.lng);
     var _pCord = new google.maps.LatLng(this.destination.lat, this.destination.lng);
     this.dis = google.maps.geometry.spherical.computeDistanceBetween(_kCord, _pCord).toFixed(3);
-    this.time = (google.maps.geometry.spherical.computeDistanceBetween(_kCord, _pCord) / 70000);
+    this.time = (google.maps.geometry.spherical.computeDistanceBetween(_kCord, _pCord) / 50000);
     this.h = this.time.toFixed(3);
     this.m = ((this.time)*60).toFixed(3);
     console.log(this.dis);
@@ -467,10 +465,15 @@ public DeleteAlertFromArray(PartitionKey, RowKey){
     }  
     
     public FalseAlarm(data: string): void {
-      let email = data[0]
-      let deviceid = data[1]
-      let falsealert = this.ALERTS_DATA.filter((alert) => !((alert.alert_obj.partitionKey === email) && (alert.alert_obj.rowKey === deviceid)))
-      console.log(falsealert)
+      let dataarray = data.split('/')
+      let email = dataarray[0]
+      let deviceid = dataarray[1]
+      console.log(email + deviceid)
+      this.ALERTS_DATA.map((alert) => {
+        if((alert.alert_obj.partitionKey === email) && (alert.alert_obj.rowKey === deviceid)){
+            alert.alert_message = "false alarm!"
+        }
+      })
     }
 
     public menuClick(): void {

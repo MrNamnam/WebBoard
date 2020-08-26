@@ -115,7 +115,7 @@ export class MonitorChartsComponent implements OnInit {
     let chart_plot = new CanvasJs.Chart("chartContainerPlot", {
       exportEnabled: true,
 		  title:{
-			  text:"Live Chart with Data-Points from External JSON"
+			  text:"Number of events during last month"
 		  },
 		  data: [{
 			  type: "spline",

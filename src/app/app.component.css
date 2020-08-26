@@ -102,11 +102,12 @@ agm-map {
   height: 18px;
 }
 .all-chats {
-  position: fixed;
+  float: right;
   bottom: 0;
-  right: 0;
   overflow: visible;
   display: flex;
   align-items: flex-end;
+  text-align: right;
 }
+
 
