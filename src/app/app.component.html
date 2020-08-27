@@ -114,9 +114,9 @@
     </agm-info-window>
   </agm-marker>
     -->
-    <agm-marker *ngFor="let marker of ALERTS_DATA" [latitude]="marker.alert_obj.latitude" [longitude]="marker.alert_obj.longitude">
+    <agm-marker *ngFor="let marker of ALERTS_DATA; let i = index;" [latitude]="marker.alert_obj.latitude" [longitude]="marker.alert_obj.longitude">
       <agm-info-window>
-        <p>{{ marker.alert_obj.RowKey }}</p>
+        <p>{{ marker.alert_obj.rowKey }}</p>
       </agm-info-window>
     </agm-marker>
   </agm-map>
@@ -197,19 +197,10 @@
 
 
 
-  <div *ngIf="page=='aboutPage'">
-    <p>
-      <span style='border:1px lightgrey solid;padding:15px; white-space: pre;' *ngFor="let device of devices">
-        {{device}}
-        <button style="background-color: rgb(39, 109, 155); color: white; margin-left:20px;"
-                (click)="increaseCounter()">
-          +
-        </button>
-        <button style="background-color: rgb(39, 109, 155); color: white;" (click)="pushButton()">+</button>
-      </span>
-    </p>
-
-    
+  <div class="aboutus" *ngIf="page=='aboutPage'">
+    <iframe width="50%" height="90%"
+    src="https://www.youtube.com/embed/PmE_LFOwXEM">
+    </iframe>
   </div>
 
 
