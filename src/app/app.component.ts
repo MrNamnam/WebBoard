@@ -136,7 +136,7 @@ export class AppComponent{
   public counter: number = 0;
   public devices: string[] = ["bla", "bla1"];
   public events: JSON;
-  public page: string;
+  public page: string = "alertsPage";
   public maptype: number = -1;
   public station: string = 'Jaffa';
 

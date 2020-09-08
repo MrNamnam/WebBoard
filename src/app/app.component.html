@@ -64,9 +64,9 @@
       False Alarm?
       <mat-checkbox class="event-info" (change)="changeDisabled(i)"> </mat-checkbox>
       Injured:
-      <input class="event-info" matInput type="number" [(ngModel)]="injured" placeholder="Number" [disabled]="this.ALERTS_DATA[i].checked">
+      <input class="event-info" matInput type="number" [(ngModel)]="this.ALERTS_DATA[i].injured" placeholder="Number" [disabled]="this.ALERTS_DATA[i].checked">
       Description:
-      <input class="event-info" matInput #message maxlength="50" [(ngModel)]="details" placeholder="Event details" [disabled]="this.ALERTS_DATA[i].checked">
+      <input class="event-info" matInput #message maxlength="50" [(ngModel)]="this.ALERTS_DATA[i].details" placeholder="Event details" [disabled]="this.ALERTS_DATA[i].checked">
       
       <button class="event-info" mat-raised-button color="primary" (click)="submitEvent(i)">Submit</button> 
       
